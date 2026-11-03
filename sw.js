@@ -1,6 +1,6 @@
 // Service Worker: speichert die App für die Offline-Nutzung.
 // Bei Änderungen an Dateien CACHE_VERSION erhöhen, damit Nutzer die neue Version bekommen.
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const CACHE = `shk-azubi-${CACHE_VERSION}`;
 const ASSETS = [
   './',

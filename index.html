@@ -89,12 +89,12 @@ button{font:inherit;color:inherit}
 .share{font-size:13px;color:var(--muted);text-align:center;margin:4px 0 0}
 /* quiz */
 .qtop{display:flex;align-items:center;gap:12px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:3}
-.icon{border:0;background:transparent;font-size:20px;cursor:pointer;padding:6px 8px;color:var(--muted)}
+.icon{border:0;background:transparent;font-size:20px;cursor:pointer;padding:6px 8px;color:var(--muted);display:grid;place-items:center}
 .qprog{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
 .qprog i{display:block;height:100%;background:var(--accent);transition:width .25s}
 .qcount,.timer{font-family:var(--mono);font-size:15px;font-variant-numeric:tabular-nums}
 .timer.low{color:var(--bad)}
-.star{border:0;background:transparent;font-size:24px;cursor:pointer;color:var(--muted);line-height:1}
+.star{border:0;background:transparent;font-size:24px;cursor:pointer;color:var(--muted);line-height:1;display:grid;place-items:center;padding:4px}
 .star.on{color:var(--mid)}
 .situ{font-size:14px;color:var(--muted);margin:8px 0 0}
 .qtext{font-size:20px;line-height:1.4;margin:10px 0 16px;text-wrap:pretty}
@@ -1217,14 +1217,14 @@ function quizView(){
   const nAns = Object.keys(S.ans).length;
   return `
   <div class="qtop">
-    <button class="icon" id="quit" aria-label="Beenden">✕</button>
+    <button class="icon" id="quit" aria-label="Beenden"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="qprog"><i style="width:${(S.kind==="exam"?nAns:S.i+(answered?1:0))/S.ids.length*100}%"></i></div>
     ${S.kind==="exam"?`<span class="timer" id="timer">${fmtTime(left)}</span>`:`<span class="qcount">${S.i+1}/${S.ids.length}</span>`}
   </div>
   <div id="quitAsk"></div>
   <section class="qcard">
     <div class="row-b"><span class="eyebrow">${NAMES[q.tp]}${S.kind==="exam"?` · Frage ${S.i+1} von ${S.ids.length}`:""}</span>
-      <button class="star ${P.mark[id]?"on":""}" id="star" aria-pressed="${!!P.mark[id]}" aria-label="Frage markieren">${P.mark[id]?"★":"☆"}</button></div>
+      <button class="star ${P.mark[id]?"on":""}" id="star" aria-pressed="${!!P.mark[id]}" aria-label="Frage markieren"><svg viewBox="0 0 24 24" width="24" height="24" fill="${P.mark[id]?"currentColor":"none"}" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></svg></button></div>
     ${q.ctx?`<p class="situ">${SITU}</p>`:""}
     <p class="qtext">${q.q}</p>
     <div class="opts">${opts}</div>
@@ -1252,7 +1252,7 @@ function resultView(){
       <button class="btn" id="toHome">Startseite</button>
     </div>
   </section>
-  ${wrong.length?`<h2 class="sec">Das solltest du dir merken</h2>${wrong.map(id=>{ const q=BY[id]; return `<section class="card rev"><p class="eyebrow">${NAMES[q.tp]}</p><p class="rq">${q.q}</p><p class="ra">✓ ${q.o[q.a]}</p>${S.ans[id]!==undefined?`<p class="rx">Deine Antwort: ${q.o[S.ans[id]]}</p>`:`<p class="rx">Nicht beantwortet</p>`}<p class="sub">${q.w}</p></section>`; }).join("")}`:`<p class="sub" style="text-align:center">Alles richtig. Stark!</p>`}`;
+  ${wrong.length?`<h2 class="sec">Das solltest du dir merken</h2>${wrong.map(id=>{ const q=BY[id]; return `<section class="card rev"><p class="eyebrow">${NAMES[q.tp]}</p><p class="rq">${q.q}</p><p class="ra">Richtig: ${q.o[q.a]}</p>${S.ans[id]!==undefined?`<p class="rx">Deine Antwort: ${q.o[S.ans[id]]}</p>`:`<p class="rx">Nicht beantwortet</p>`}<p class="sub">${q.w}</p></section>`; }).join("")}`:`<p class="sub" style="text-align:center">Alles richtig. Stark!</p>`}`;
 }
 function fmtTime(ms){ const m=Math.floor(ms/60000), s=Math.floor(ms/1000)%60; return `${m}:${String(s).padStart(2,"0")}`; }
 
@@ -1275,7 +1275,7 @@ function calcQuizView(){
   const S=P.sess, i=S.i, t=S.tasks[i], chk=!!S.chk[i], ok=chk&&calcOk(t,S.ans[i]), last=i===S.tasks.length-1;
   return `
   <div class="qtop">
-    <button class="icon" id="cquit" aria-label="Beenden">✕</button>
+    <button class="icon" id="cquit" aria-label="Beenden"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="qprog"><i style="width:${(i+(chk?1:0))/S.tasks.length*100}%"></i></div>
     <span class="qcount">${i+1}/${S.tasks.length}</span>
   </div>
@@ -1301,7 +1301,7 @@ function calcResultView(){
     <p class="sub">${Math.round(ok/n*100)} % richtig</p>
     <div class="actions"><button class="btn primary" id="cagain">Neue Zahlen, gleiche Aufgaben</button><button class="btn" id="cmenu">Rechnen-Übersicht</button><button class="btn" id="toHome">Startseite</button></div>
   </section>
-  ${S.tasks.map((t,i)=>{ const good=S.chk[i]&&calcOk(t,S.ans[i]); return `<section class="card rev"><p class="eyebrow">${t.name}</p><p class="rq">${t.q}</p><p class="ra">✓ ${f(t.ans,t.dec)} ${t.unit}</p>${good?"":`<p class="rx">Deine Antwort: ${S.ans[i]?esc(S.ans[i])+" "+t.unit:"keine"}</p><p class="sub">${t.steps.join(" · ")}</p>`}</section>`; }).join("")}`;
+  ${S.tasks.map((t,i)=>{ const good=S.chk[i]&&calcOk(t,S.ans[i]); return `<section class="card rev"><p class="eyebrow">${t.name}</p><p class="rq">${t.q}</p><p class="ra">Richtig: ${f(t.ans,t.dec)} ${t.unit}</p>${good?"":`<p class="rx">Deine Antwort: ${S.ans[i]?esc(S.ans[i])+" "+t.unit:"keine"}</p><p class="sub">${t.steps.join(" · ")}</p>`}</section>`; }).join("")}`;
 }
 function calcBind(){
   const on=(id,fn)=>{ const e=$(id); if(e) e.onclick=fn; };
