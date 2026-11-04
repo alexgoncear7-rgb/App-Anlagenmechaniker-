@@ -1,0 +1,10 @@
+{
+  "name": "shk-azubi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SHK-Prüfungstrainer für Anlagenmechaniker SHK (PWA)",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8080"
+  }
+}
